@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+    <html lang="en">
+        <head>
+            <title>TO-DO APP</title>
+            <link rel="stylesheet" href="style.css">
+        </head>
+        <body>
+            <header class="navigacija">
+                <h1 class="naziv">ToDo</h1>
+                <nav>
+                    <a href="#">Link1</a>
+                    <a href="#">Link2</a>
+                    <a href="#">Link3</a>
+                </nav>
+            </header>
+            <main>
+                <section>
+                    <div class="bijeliPravougaonik">
+                        <input type="text" placeholder="Enter task here..." id="taskInput">
+                            <div class="dugmadRed fixed-container">
+                                <button id="datePicker">DateTime Picker</button>
+                                <button id="addButton">ADD</button>
+                            </div>
+                    </div>
+            </section>
+                    <section>
+                        <div class="listaTaskova">
+                            <h2>Tasks</h2>
+                                <div class="item">
+                                    <p>Go to the gym</p>
+                                    <span class="taskDate">January<br>23</span>
+                                </div>
+                                <div class="item">
+                                    <p>Learn javascript</p>
+                                    <span class="taskDate">July<br>09</span>
+                                </div>
+                        </div>
+                    </section>
+            </main>
+            <script src="script.js"></script>
+        </body>
+    </html>
