@@ -1,5 +1,52 @@
-// trazenje elemenata, globalne promjenjive
-// query
+document.getElementById('taskList').addEventListener('dblclick', editTitle);
+
+document.getElementById('addButton').addEventListener('click', function () {
+    const taskInput = document.getElementById('taskInput');
+    const dateInput = document.getElementById('dateInput');
+    const taskList = document.getElementById('taskList');
+
+    const taskName = taskInput.value.trim();
+    const selectedDate = dateInput ? dateInput.value : null;
+
+    if (!selectedDate) {
+        alert('Molimo izaberite datum!');
+        return;
+    }
+    if (taskName.length < 3) {
+        alert('Naziv taska mora imati barem 3 karaktera!');
+        return;
+    }
+
+    const newTaskItem = document.createElement('div');
+    newTaskItem.classList.add('item');
+
+    const taskText = document.createElement('p');
+    taskText.textContent = taskName;
+
+    const taskDate = document.createElement('span');
+    taskDate.classList.add('taskDate');
+
+    const dateText = document.createElement('span');
+    const date = new Date(selectedDate);
+    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    dateText.innerHTML = `${months[date.getMonth()]}<br>${date.getDate()}`;
+    taskDate.appendChild(dateText);
+    
+
+    const deleteIcon = document.createElement('img');
+    deleteIcon.src = 'resources/trash.png'; 
+    deleteIcon.alt = 'Delete Icon';
+    deleteIcon.classList.add('deleteIcon');
+    taskDate.appendChild(deleteIcon);
+
+    newTaskItem.appendChild(taskText);
+    newTaskItem.appendChild(taskDate);
+    taskList.appendChild(newTaskItem);
+
+    // Resetuj inpute
+    taskInput.value = '';
+    if (dateInput) dateInput.value = '';
+});
 
 document.getElementById('datePicker').addEventListener('click', function () {
     const datePickerButton = document.getElementById('datePicker');
@@ -9,58 +56,45 @@ document.getElementById('datePicker').addEventListener('click', function () {
     dateInput.type = 'date';
     dateInput.id = 'dateInput';
 
-    dateInput.style.height = `${datePickerButton.offsetHeight}px`; 
-    dateInput.style.width = `${datePickerButton.offsetWidth}px`; 
+    dateInput.style.height = `${datePickerButton.offsetHeight}px`;
+    dateInput.style.width = `${datePickerButton.offsetWidth}px`;
     dateInput.style.fontSize = window.getComputedStyle(datePickerButton).fontSize;
 
     buttonParent.replaceChild(dateInput, datePickerButton);
 });
 
-document.getElementById('addButton').addEventListener('click', function () {
-    const taskInput = document.getElementById('taskInput');
-    const dateInput = document.getElementById('dateInput');
-    const buttonParent = document.querySelector('.dugmadRed');
+function editTitle(event){
+    
+    const target = event.target;
+    if(target.tagName == 'P'){
+        const currentText = target.textContent;
 
-    const taskName = taskInput.value.trim();
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.value = currentText;
 
-    const selectedDate = dateInput ? dateInput.value : null;
+        target.textContent = '';
+        target.appendChild(input);
+        input.focus();
 
-    // Ako nije postavljen datum
-    if (!selectedDate) {
-        alert('Molimo izaberite datum!');
-        return;
-    }
-
-    // Ako je unos kraći od 3 karaktera nije validan
-    if (taskName.length < 3) {
-        alert('Naziv taska mora imati barem 3 karaktera!');
-        return;
-    }
-
-    if (taskName && selectedDate) {
-        console.log(`Dodat task - ${taskName}`);
-
-        const datePickerButton = document.createElement('button');
-        datePickerButton.id = 'datePicker';
-        datePickerButton.textContent = 'DateTime Picker';
-        datePickerButton.style.height = `${dateInput.offsetHeight}px`;
-        datePickerButton.style.width = `${dateInput.offsetWidth}px`;
-        datePickerButton.style.fontSize = window.getComputedStyle(dateInput).fontSize;
-
-        buttonParent.replaceChild(datePickerButton, dateInput);
-
-        datePickerButton.addEventListener('click', function () {
-            const dateInput = document.createElement('input');
-            dateInput.type = 'date';
-            dateInput.id = 'dateInput';
-            dateInput.style.height = `${datePickerButton.offsetHeight}px`;
-            dateInput.style.width = `${datePickerButton.offsetWidth}px`;
-            dateInput.style.fontSize = window.getComputedStyle(datePickerButton).fontSize;
-            buttonParent.replaceChild(dateInput, datePickerButton);
+        input.addEventListener('blur', function () {
+            const newText = input.value.trim();
+            target.textContent = newText.length > 0 ? newText : currentText;
         });
 
-        taskInput.value = '';
-    } else {
-        alert('Please fill out both the task and date!');
+        /*input.addEventListener('dblclick', function (e) {
+            e.stopPropagation();
+        });*/
+    }
+}
+
+document.getElementById('taskList').addEventListener('click', function (event) {
+    const target = event.target;
+
+    if (target.classList.contains('deleteIcon')) {
+        const taskItem = target.closest('.item');
+        if (taskItem) {
+            taskItem.remove();
+        }
     }
 });
