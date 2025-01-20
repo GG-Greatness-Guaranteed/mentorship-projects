@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #2c3e50;
+            color: #ecf0f1;
+        }
+
+        .container {
+            text-align: center;
+            background: #34495e;
+            padding: 20px 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .categories, .difficulty {
+            margin: 20px 0;
+        }
+
+        .button {
+            display: inline-block;
+            margin: 5px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background: #1abc9c;
+            color: #ecf0f1;
+            font-size: 16px;
+            transition: background 0.3s ease;
+        }
+
+        .button:hover {
+            background: #16a085;
+        }
+
+        .start-btn {
+            margin-top: 30px;
+            background: #e74c3c;
+        }
+
+        .start-btn:hover {
+            background: #c0392b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Quiz App</h1>
+
+        <div class="categories">
+            <h3>Categories</h3>
+            <button class="button" data-category="geography">Geography</button>
+            <button class="button" data-category="music">Music</button>
+            <button class="button" data-category="history">History</button>
+            <button class="button" data-category="science">Science</button>
+        </div>
+
+        <div class="difficulty">
+            <h3>Difficulty</h3>
+            <button class="button" data-difficulty="easy">Easy</button>
+            <button class="button" data-difficulty="medium">Medium</button>
+            <button class="button" data-difficulty="hard">Hard</button>
+        </div>
+
+        <button class="button start-btn" id="start">Start</button>
+    </div>
+
+    <script>
+        let selectedCategory = null;
+        let selectedDifficulty = null;
+
+        document.querySelectorAll('.categories .button').forEach(button => {
+            button.addEventListener('click', () => {
+                selectedCategory = button.getAttribute('data-category');
+                highlightSelected(button, '.categories .button');
+            });
+        });
+
+        document.querySelectorAll('.difficulty .button').forEach(button => {
+            button.addEventListener('click', () => {
+                selectedDifficulty = button.getAttribute('data-difficulty');
+                highlightSelected(button, '.difficulty .button');
+            });
+        });
+
+        document.getElementById('start').addEventListener('click', () => {
+            if (selectedCategory && selectedDifficulty) {
+                alert(`Starting quiz: \nCategory: ${selectedCategory}\nDifficulty: ${selectedDifficulty}`);
+                // preusmeravanje
+            } else {
+                alert('Please select a category and difficulty!');
+            }
+        });
+
+        function highlightSelected(selectedButton, groupSelector) {
+            document.querySelectorAll(groupSelector).forEach(button => {
+                button.style.background = '#1abc9c';
+            });
+            selectedButton.style.background = '#16a085';
+        }
+    </script>
+</body>
+</html>
