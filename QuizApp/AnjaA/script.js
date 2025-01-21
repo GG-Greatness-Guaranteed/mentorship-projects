@@ -16,36 +16,43 @@ startButton.disabled = true;
 
 musicButton.addEventListener("click", () => {
     category = "Music";
+    highlightSelectedButton([musicButton, geoButton, historyButton, scienceButton], musicButton);
     checkSelection();
 })
 
 geoButton.addEventListener("click", () => {
     category = "Geography";
+    highlightSelectedButton([musicButton, geoButton, historyButton, scienceButton], geoButton);
     checkSelection();
 })
 
 historyButton.addEventListener("click", () => {
     category = "History";
+    highlightSelectedButton([musicButton, geoButton, historyButton, scienceButton], historyButton);
     checkSelection();
 })
 
 scienceButton.addEventListener("click", () => {
     category = "Science";
+    highlightSelectedButton([musicButton, geoButton, historyButton, scienceButton], scienceButton);
     checkSelection();
 })
 
 easyButton.addEventListener("click", () => {
     difficulty = "Easy";
+    highlightSelectedButton([easyButton, mediumButton, hardButton], easyButton);
     checkSelection();
 })
 
 mediumButton.addEventListener("click", () => {
     difficulty = "Medium";
+    highlightSelectedButton([easyButton, mediumButton, hardButton], mediumButton);
     checkSelection();
 })
 
 hardButton.addEventListener("click", () => {
     difficulty = "Hard";
+    highlightSelectedButton([easyButton, mediumButton, hardButton], hardButton);
     checkSelection();
 })
 
@@ -62,6 +69,11 @@ startButton.addEventListener("click", () => {
     }
 });
 
+function highlightSelectedButton(allButtons, selectedButton) {
+    allButtons.forEach(btn => btn.classList.remove('active'));
+    selectedButton.classList.add('active');
+}
+
 function prikaziScreenSaPitanjima() {
     const body = document.querySelector(".glavna-klasa");
 
@@ -69,7 +81,7 @@ function prikaziScreenSaPitanjima() {
     questionScreen.classList.add("screen");
 
     questionScreen.innerHTML = `
-        <div class="question-container">
+        <div class="kontejner">
             <h2 class="izabrana-kategorija">${category}</h2>
 
         <div class="pitanje">

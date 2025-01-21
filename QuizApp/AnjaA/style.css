@@ -34,8 +34,9 @@ h2 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 20px;
     height: 100%;
+    justify-content: flex-start;
+    /*padding-bottom: 40px;*/
 }
 
 
@@ -80,6 +81,12 @@ button:hover {
     font-size: 28px;
 }
 
+button.active {
+    background-color: #1e293b; 
+    color: #EAB308;          
+    border: 2px solid #EAB308; 
+}
+
 .screen {
     display: flex;
     flex-direction: column;
@@ -96,6 +103,7 @@ button:hover {
 
 .izabrana-kategorija {
     color: #EAB308;
+    margin: 10; 
 }
 
 .pitanje {
@@ -105,16 +113,21 @@ button:hover {
     height: 130px;
     gap: 30px;
     margin-top: 20px;
+    display: flex;
+    align-items: center;
     justify-content: center;
 }
 
 .ponudjeni-odgovori {
+    margin-top: auto;
+    margin-bottom: 40px;
     display: grid;
     grid-template-columns: repeat(2, 1fr); 
     gap: 20px;                                                        
     justify-items: center;  
     width: auto; 
-    margin-top: auto; 
+
+    
 }
 
 .ponudjeni-odgovori button {
