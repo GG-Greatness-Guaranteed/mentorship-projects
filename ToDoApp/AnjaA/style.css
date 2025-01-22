@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
-
 body {
     font-family: 'Roboto', sans-serif;
     text-align: center; 
@@ -16,33 +15,28 @@ header.navigacija {
     align-items: center;
     width: 100%;
     height: 69px;
-    top: -3px;
     padding: 0 20px;
     background-color: #9333EA;
     color: #F8FAFC;
-    box-sizing: border-box; /*ovo da mi padding ne doda jos velicine*/
+    box-sizing: border-box;
 }
 
 .naziv {
     font-weight: 700;
     font-size: 32px;
-    padding-left: 189px;
-    width: 70px;
-    height: 38px;
-    top: 12px;
 }
 
-nav{
+nav {
     display: flex;
     gap: 20px;
 }
 
-nav a{
+nav a {
     color: #F8FAFC;
     font-weight: 700;
 }
 
-.bijeliPravougaonik{
+.bijeliPravougaonik {
     background-color: #F8FAFC;
     width: 1068px;
     height: 265px; 
@@ -61,7 +55,7 @@ nav a{
     padding: 15px;
     font-size: 16px;
     width: 930.61px;
-    height: 110px;;
+    height: 110px;
     border: 1px solid #A3A3A3;
     border-radius: 5px;
 }
@@ -74,22 +68,21 @@ nav a{
 }
 
 #datePicker, #dateInput {
-  background-color: #D9D9D9;
-  color: #222222;
-  padding: 10px;
-  margin: 10px 0;
-  width: 261px; /* Matches the original button width */
-  height: 46px; /* Matches the original button height */
-  border-radius: 5px; /* Keeps the rounded corners */
-  font-size: 12px; /* Consistent font size */
-  text-align: center;
-  box-sizing: border-box; /* Ensures padding doesn't affect dimensions */
-  border: 1px solid #A3A3A3; /* Matches other inputs */
+    background-color: #D9D9D9;
+    color: #222222;
+    padding: 10px;
+    width: 261px;
+    height: 46px;
+    border-radius: 5px;
+    font-size: 12px;
+    text-align: center;
+    box-sizing: border-box;
+    border: 1px solid #A3A3A3;
 }
 
 #dateInput {
-  appearance: none; /* Removes default styling on some browsers */
-  cursor: pointer; /* Makes it clear that this is an interactive element */
+    appearance: none;
+    cursor: pointer;
 }
 
 #addButton {
@@ -101,12 +94,11 @@ nav a{
     border-radius: 8px;
     font-weight: 700;
     font-size: 24px;
-  }
+}
 
 #datePicker:hover, #addButton:hover {
     cursor: pointer;
 }
-  
 
 main section {
     display: flex;
@@ -125,27 +117,26 @@ main section {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 20px;
     box-sizing: border-box;
     overflow: hidden;
+    gap: 20px;
 }
 
 .listaTaskova h2 {
     font-size: 24px;
-    font-weight: 700px;
+    font-weight: 700;
 }
 
 #taskList {
     max-height: 400px; 
     overflow-y: auto; 
     width: 100%; 
-    display: flex;
-    flex-direction: column;
-    align-items: center; 
-    gap: 20px; 
     padding-right: 10px; 
     box-sizing: border-box; 
     scrollbar-gutter: stable;
+    list-style: none; /* Uklanja oznake liste */
+    margin: 0;
+    padding: 0;
 }
 
 .item {
@@ -156,10 +147,14 @@ main section {
     height: 147px; 
     background-color: #F8FAFC;
     border-radius: 16px;
-    padding: 0px 20px;
+    padding: 0 20px;
     border: 1px solid #A3A3A3;
-    flex-shrink: 0;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px; /* Dodan razmak između stavki */
+}
+
+.item:last-child {
+    margin-bottom: 0; /* Uklanja dodatni razmak ispod zadnjeg elementa */
 }
 
 .item p {
@@ -197,4 +192,21 @@ main section {
 .taskDate:hover {
     background-color: #950404; 
     color: transparent;
+}
+
+#taskList::-webkit-scrollbar-thumb {
+    background-color: #9333EA; /* Ljubičasta boja za scrollbar */
+    border-radius: 10px; /* Zaobljeni rubovi */
+    border: 2px solid #F8FAFC; /* Svjetlija boja oko scrollbara */
+}
+
+#taskList::-webkit-scrollbar-track {
+    background-color: #D9D9D9; /* Svjetlija pozadina za track */
+    border-radius: 10px;
+}
+
+/* Za Firefox (ne podržava ::-webkit-scrollbar) */
+#taskList {
+    scrollbar-width: thin; /* Tanja širina scrollbara */
+    scrollbar-color: #9333EA #D9D9D9; /* Ljubičasti scrollbar na svijetloj pozadini */
 }

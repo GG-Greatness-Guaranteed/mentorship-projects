@@ -62,10 +62,14 @@ function checkSelection() {
     }
 }
 
-startButton.addEventListener("click", () => {
+startButton.addEventListener("click", async () => { // Dodajte async ovde
     if (category && difficulty) {
         document.querySelector(".kontejner").classList.add("hidden"); 
-        prikaziScreenSaPitanjima(); // Prikaži novi ekran
+
+        const kategorijaId = getCategoryId(category);
+        const questions = await fetchQuizQuestions(kategorijaId, difficulty); // await sada radi
+
+        prikaziScreenSaPitanjima(questions);
     }
 });
 
@@ -74,26 +78,102 @@ function highlightSelectedButton(allButtons, selectedButton) {
     selectedButton.classList.add('active');
 }
 
-function prikaziScreenSaPitanjima() {
+function prikaziScreenSaPitanjima(questions) {
     const body = document.querySelector(".glavna-klasa");
 
     const questionScreen = document.createElement("div");
     questionScreen.classList.add("screen");
 
-    questionScreen.innerHTML = `
-        <div class="kontejner">
-            <h2 class="izabrana-kategorija">${category}</h2>
+    const kontejner = document.createElement("div");
+    kontejner.classList.add("kontejner");
 
-        <div class="pitanje">
-            <p>What is the capital of France?</p>
-        </div>
-        <div class="ponudjeni-odgovori">
-            <button>Paris</button>
-            <button>Barcelona</button>
-            <button>Belgrade</button>
-            <button>Istanbul</button>
-        </div>
-    `;
+    const h2 = document.createElement("h2");
+    h2.classList.add("izabrana-kategorija");
+    h2.textContent = category;
+    kontejner.appendChild(h2);
 
+    const pitanjeDiv = document.createElement("div");
+    pitanjeDiv.classList.add("pitanje");
+    const tekstPitanja = document.createElement("p");
+    pitanjeDiv.appendChild(tekstPitanja);
+    kontejner.appendChild(pitanjeDiv);
+
+    const odgovorDiv = document.createElement("div");
+    odgovorDiv.classList.add("ponudjeni-odgovori");
+    kontejner.appendChild(odgovorDiv);
+
+    questionScreen.appendChild(kontejner);
     body.appendChild(questionScreen);
+
+    let currentQuestionIndex = 0;
+
+    function prikaziPitanje() {
+        const pitanje = questions[currentQuestionIndex];
+        tekstPitanja.textContent = pitanje.question; // Ispravan pristup tekstu pitanja
+
+        odgovorDiv.innerHTML = ''; // Očisti prethodne odgovore
+        const allAnswers = [...pitanje.incorrect_answers, pitanje.correct_answer];
+        allAnswers.sort(() => Math.random() - 0.5); // Pomešaj odgovore
+
+        allAnswers.forEach(answer => {
+            const button = document.createElement("button");
+            button.textContent = answer;
+            button.addEventListener("click", () => {
+                if (answer === pitanje.correct_answer) {
+                    alert("Correct!");
+                } else {
+                    alert("Wrong!");
+                }
+
+                currentQuestionIndex++;
+                if (currentQuestionIndex < questions.length) {
+                    prikaziPitanje(); // Prikaži sledeće pitanje
+                } else {
+                    alert("Quiz finished!");
+                    location.reload(); // Restartuj aplikaciju
+                }
+            });
+            odgovorDiv.appendChild(button);
+        });
+    }
+
+    prikaziPitanje();
 }
+
+function getCategoryId(categoryString) {
+    switch (categoryString) {
+        case 'Music' : return 12;
+        case 'History' : return 23;
+        case 'Science' : return 17;
+        case 'Geography' : return 22;
+    }
+}
+
+function createQuizURL(categoryId, difficulty){
+    return `https://opentdb.com/api.php?amount=10&category=${categoryId}&difficulty=${difficulty.toLowerCase()}&type=multiple`;
+}
+
+async function fetchQuizQuestions(categoryId, difficulty){
+    const url = createQuizURL(categoryId,difficulty);
+  
+  // Uvek "await" pisemo u try{}catch(){} (Moze se dodati i finally{})
+  // jer je neizvesno da li ce se desiti greska u procesu slanja i preuzimanja podataka
+    try {
+        const response = await fetch(url, {
+        method: 'GET',
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status} - ${response.statusText}`);
+      }
+  
+      const data = await response.json(); // Da bi isparsirali json format u objekat, obzirom da podatke 
+                                          // uvek dobijamo i saljemo u JSON formatu
+      return data.results || [];       // Ispis da li su dobri podaci primljeni
+    } catch (error) {
+      console.error('Failed to fetch quiz questions:', error.message); // Ukoliko dodje do greske
+      return [];
+    }
+  }
+  
+  fetchQuizQuestions();
