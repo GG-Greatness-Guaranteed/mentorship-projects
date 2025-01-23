@@ -137,3 +137,44 @@ button.active {
     background-color: #475569;
 }
 
+.zavrsni-screen h2 {
+    font-size: 36px;
+    margin-bottom: 20px;
+    color: #EAB308;
+}
+
+.zavrsni-screen p {
+    font-size: 24px;
+    margin: 10px 0;
+}
+
+.zavrsni-screen button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 96px; /* Prostor unutar dugmeta */
+    font-size: 34px; /* Veličina fonta */
+    font-weight: 600; /* Podebljan tekst */
+    color: white; /* Boja teksta */
+    background-color: #475569; /* Neutralna tamna pozadina */
+    border: none; /* Bez ivica */
+    border-radius: 8px; /* Zaobljene ivice */
+    cursor: pointer; /* Promena kursora na ruku */
+    text-align: center; /* Centriranje teksta */
+    text-decoration: none; /* Bez podvlačenja */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Glatke tranzicije */
+    margin-bottom: 30px;
+}
+
+/* Hover efekat */
+.zavrsni-screen button:hover {
+    background-color: #EAB308; /* Zlatna nijansa za hover */
+    color: black; /* Kontrastna boja teksta na hover */
+    transform: scale(1.05); /* Blago povećanje */
+}
+
+/* Aktivno stanje (klik) */
+.zavrsni-screen button:active {
+    transform: scale(0.95); /* Blago smanjenje na klik */
+}
+

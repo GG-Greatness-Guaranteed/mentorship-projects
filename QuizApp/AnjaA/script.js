@@ -62,12 +62,13 @@ function checkSelection() {
     }
 }
 
-startButton.addEventListener("click", async () => { // Dodajte async ovde
+/// moram pogledat async i await 
+startButton.addEventListener("click", async () => { 
     if (category && difficulty) {
         document.querySelector(".kontejner").classList.add("hidden"); 
 
         const kategorijaId = getCategoryId(category);
-        const questions = await fetchQuizQuestions(kategorijaId, difficulty); // await sada radi
+        const questions = await fetchQuizQuestions(kategorijaId, difficulty); 
 
         prikaziScreenSaPitanjima(questions);
     }
@@ -77,6 +78,8 @@ function highlightSelectedButton(allButtons, selectedButton) {
     allButtons.forEach(btn => btn.classList.remove('active'));
     selectedButton.classList.add('active');
 }
+
+var brojTacnihOdgovora = 0;
 
 function prikaziScreenSaPitanjima(questions) {
     const body = document.querySelector(".glavna-klasa");
@@ -109,29 +112,39 @@ function prikaziScreenSaPitanjima(questions) {
 
     function prikaziPitanje() {
         const pitanje = questions[currentQuestionIndex];
-        tekstPitanja.textContent = pitanje.question; // Ispravan pristup tekstu pitanja
-
-        odgovorDiv.innerHTML = ''; // Očisti prethodne odgovore
+        tekstPitanja.textContent = pitanje.question; 
+    
+        odgovorDiv.innerHTML = ''; 
         const allAnswers = [...pitanje.incorrect_answers, pitanje.correct_answer];
-        allAnswers.sort(() => Math.random() - 0.5); // Pomešaj odgovore
-
+        allAnswers.sort(() => Math.random() - 0.5); 
+    
         allAnswers.forEach(answer => {
             const button = document.createElement("button");
             button.textContent = answer;
             button.addEventListener("click", () => {
+                Array.from(odgovorDiv.children).forEach(btn => btn.disabled = true);
+    
                 if (answer === pitanje.correct_answer) {
-                    alert("Correct!");
+                    button.style.backgroundColor = "green";
+                    brojTacnihOdgovora++;
                 } else {
-                    alert("Wrong!");
+                    button.style.backgroundColor = "red";
+    
+                    Array.from(odgovorDiv.children).forEach(btn => {
+                        if (btn.textContent === pitanje.correct_answer) {
+                            btn.style.backgroundColor = "green";
+                        }
+                    });
                 }
-
-                currentQuestionIndex++;
-                if (currentQuestionIndex < questions.length) {
-                    prikaziPitanje(); // Prikaži sledeće pitanje
-                } else {
-                    alert("Quiz finished!");
-                    location.reload(); // Restartuj aplikaciju
-                }
+    
+                setTimeout(() => {
+                    currentQuestionIndex++;
+                    if (currentQuestionIndex < questions.length) {
+                        prikaziPitanje(); 
+                    } else {
+                        prikaziZavrsniScreen(); 
+                    }
+                }, 1500); 
             });
             odgovorDiv.appendChild(button);
         });
@@ -177,3 +190,27 @@ async function fetchQuizQuestions(categoryId, difficulty){
   }
   
   fetchQuizQuestions();
+
+  function prikaziZavrsniScreen(){
+    const body = document.querySelector(".glavna-klasa");
+    body.innerHTML = ' ';
+
+    const zavrsniScreen = document.createElement("div");
+    zavrsniScreen.classList.add("screen", "zavrsni-screen");
+
+    const h2 = document.createElement("h2");
+    h2.textContent = "End of the quiz!";
+    zavrsniScreen.appendChild(h2);
+
+    const resultTekst = document.createElement("p");
+    resultTekst.textContent = `Number of correct answers: ${brojTacnihOdgovora} out of 10`; 
+    zavrsniScreen.appendChild(resultTekst);
+
+    const restart = document.createElement("button");
+    restart.textContent = "Retake";
+    restart.addEventListener("click", ()=>{
+        location.reload();
+    })
+    zavrsniScreen.appendChild(restart);
+    body.appendChild(zavrsniScreen);
+  }
