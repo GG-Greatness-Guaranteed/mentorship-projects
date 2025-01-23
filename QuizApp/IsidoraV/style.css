@@ -1,0 +1,212 @@
+/*
+    color palette:
+
+    color 1: #16423C 
+    color 2: #6A9C89
+    color 3: #C4DAD2
+    color 4: #E9EFEC
+*/
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #16423c;
+  font-family: "Bebas Neue", serif;
+  font-weight: 400;
+  font-style: normal;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+h1 {
+  color: #e9efec;
+}
+
+p {
+  color: #16423c;
+  font-size: larger;
+  margin: 1% 0;
+}
+
+#container {
+  text-align: center;
+  background-color: #6a9c89;
+  margin: 0 auto;
+  width: 55%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  border-radius: 10px;
+  border: 5px dotted #e9efec;
+}
+
+#start,
+.nextQuestion {
+  width: 15%;
+  padding: 7px 14px;
+  color: #6a9c89;
+  background-color: #e9efec;
+  border-radius: 10px;
+}
+
+.nextQuestion {
+  border: 2px solid #c4dad2;
+  font-weight: 700;
+  color: #16423c;
+}
+
+#start:hover {
+  color: #e9efec;
+  background-color: #16423c;
+}
+
+.nextQuestion:hover {
+  background-color: #c4dad2;
+}
+
+#start,
+.categoryBtn,
+.difficultyBtn,
+.nextQuestion {
+  text-decoration: none;
+  margin-bottom: 5%;
+  white-space: wrap;
+}
+
+.categoryBtn,
+.difficultyBtn {
+  width: 15%;
+  padding: 5px 10px;
+  color: #16423c;
+  background-color: #c4dad2;
+  border-radius: 10px;
+}
+
+.categoryBtn:hover,
+.difficultyBtn:hover {
+  color: #6a9c89;
+  background-color: #e9efec;
+}
+
+#category,
+#difficultyList,
+#answers {
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  margin-top: 4%;
+}
+
+#answers {
+  flex-wrap: wrap;
+  padding: 1%;
+  margin-top: 2%;
+}
+
+.answer {
+  width: 48%;
+  margin-bottom: 2%;
+  padding: 5px 10px;
+  color: #16423c;
+  font-size: large;
+  font-weight: 500;
+  border-radius: 10px;
+  border: 2px solid #e9efec;
+  background-color: #c4dad2;
+}
+
+.answer:hover {
+  opacity: 0.8;
+}
+
+#categories,
+#difficulty {
+  width: 100%;
+}
+
+.title {
+  padding-top: 20px;
+  margin-bottom: 20px !important;
+  color: #16423c;
+  border-bottom: 3px dotted #c4dad2;
+  margin: 0 auto;
+  text-align: center;
+}
+
+#question {
+  padding: 1%;
+}
+
+.correct {
+  background-color: #3ca089;
+  border-color: #89cec5;
+  color: #89cec5;
+}
+
+.correct:hover {
+  opacity: 1;
+}
+
+.wrong {
+  background-color: #c65d5d;
+  border-color: #eda7a7;
+  color: #eda7a7;
+}
+
+.wrong:hover {
+  opacity: 1;
+}
+
+.active {
+  background-color: #16423c;
+  color: #6a9c89;
+}
+
+.active:hover {
+  color: #6a9c89;
+  background-color: #16423c;
+}
+
+.disabled:hover {
+  opacity: 1 !important;
+}
+
+.nextQuestion.disabled:hover {
+  background-color: #e9efec;
+}
+
+/*Responsive*/
+
+@media (max-width: 768px) {
+  #container {
+    width: 90%;
+  }
+}
+
+@media (max-width: 768px) {
+  #container {
+    width: 90%;
+  }
+
+  #start,
+  .categoryBtn {
+    width: 20%;
+  }
+}
+
+@media (max-width: 480px) {
+  #start,
+  .categoryBtn,
+  .difficultyBtn {
+    width: 22%;
+    font-size: smaller;
+  }
+}
