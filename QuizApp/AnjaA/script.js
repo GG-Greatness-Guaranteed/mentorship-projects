@@ -14,47 +14,31 @@ const startButton = document.getElementById("start");
 
 startButton.disabled = true;
 
-musicButton.addEventListener("click", () => {
-    category = "Music";
-    highlightSelectedButton([musicButton, geoButton, historyButton, scienceButton], musicButton);
-    checkSelection();
-})
+function selectCategory(selectedCategory, buttons, buttonElement) {
+    category = selectedCategory; 
+    highlightSelectedButton(buttons, buttonElement); 
+    checkSelection(); 
+}
 
-geoButton.addEventListener("click", () => {
-    category = "Geography";
-    highlightSelectedButton([musicButton, geoButton, historyButton, scienceButton], geoButton);
-    checkSelection();
-})
+[musicButton, geoButton, historyButton, scienceButton].forEach((button, index) => {
+    const categories = ["Music", "Geography", "History", "Science"];
+    button.addEventListener("click", () => {
+        selectCategory(categories[index], [musicButton, geoButton, historyButton, scienceButton], button);
+    });
+});
 
-historyButton.addEventListener("click", () => {
-    category = "History";
-    highlightSelectedButton([musicButton, geoButton, historyButton, scienceButton], historyButton);
-    checkSelection();
-})
+function selectDifficulty(selectedDifficulty, buttons, buttonElement) {
+    difficulty = selectedDifficulty; 
+    highlightSelectedButton(buttons, buttonElement); 
+    checkSelection(); 
+}
 
-scienceButton.addEventListener("click", () => {
-    category = "Science";
-    highlightSelectedButton([musicButton, geoButton, historyButton, scienceButton], scienceButton);
-    checkSelection();
-})
-
-easyButton.addEventListener("click", () => {
-    difficulty = "Easy";
-    highlightSelectedButton([easyButton, mediumButton, hardButton], easyButton);
-    checkSelection();
-})
-
-mediumButton.addEventListener("click", () => {
-    difficulty = "Medium";
-    highlightSelectedButton([easyButton, mediumButton, hardButton], mediumButton);
-    checkSelection();
-})
-
-hardButton.addEventListener("click", () => {
-    difficulty = "Hard";
-    highlightSelectedButton([easyButton, mediumButton, hardButton], hardButton);
-    checkSelection();
-})
+[easyButton, mediumButton, hardButton].forEach((button, index) => {
+    const difficulties = ["Easy", "Medium", "Hard"];
+    button.addEventListener("click", () => {
+        selectDifficulty(difficulties[index], [easyButton, mediumButton, hardButton], button);
+    });
+});
 
 function checkSelection() {
     if (category && difficulty) {
@@ -112,7 +96,7 @@ function prikaziScreenSaPitanjima(questions) {
 
     function prikaziPitanje() {
         const pitanje = questions[currentQuestionIndex];
-        tekstPitanja.textContent = pitanje.question; 
+        tekstPitanja.innerHTML = pitanje.question; 
     
         odgovorDiv.innerHTML = ''; 
         const allAnswers = [...pitanje.incorrect_answers, pitanje.correct_answer];
@@ -120,7 +104,7 @@ function prikaziScreenSaPitanjima(questions) {
     
         allAnswers.forEach(answer => {
             const button = document.createElement("button");
-            button.textContent = answer;
+            button.innerHTML = answer;
             button.addEventListener("click", () => {
                 Array.from(odgovorDiv.children).forEach(btn => btn.disabled = true);
     
