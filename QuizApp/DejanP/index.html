@@ -54,18 +54,65 @@
         .start-btn:hover {
             background: #c0392b;
         }
+
+        .quiz {
+            display: none;
+            text-align: left;
+        }
+
+        .quiz h2 {
+            margin-bottom: 20px;
+        }
+
+        .quiz .options {
+            margin: 10px 0;
+        }
+
+        .quiz .options button {
+            display: block;
+            width: 100%;
+            margin: 5px 0;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .quiz .next-btn {
+            margin-top: 20px;
+            background: #1abc9c;
+        }
+
+        .quiz .next-btn:hover {
+            background: #16a085;
+        }
+
+        .correct {
+            background: #27ae60 !important;
+        }
+
+        .wrong {
+            background: #e74c3c !important;
+        }
+
+        .results {
+            display: none;
+            text-align: center;
+        }
+
+        .results h2 {
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="container" id="setup">
         <h1>Quiz App</h1>
 
         <div class="categories">
             <h3>Categories</h3>
-            <button class="button" data-category="geography">Geography</button>
-            <button class="button" data-category="music">Music</button>
-            <button class="button" data-category="history">History</button>
-            <button class="button" data-category="science">Science</button>
+            <button class="button" data-category="22">Geography</button>
+            <button class="button" data-category="12">Music</button>
+            <button class="button" data-category="23">History</button>
+            <button class="button" data-category="17">Science</button>
         </div>
 
         <div class="difficulty">
@@ -78,9 +125,26 @@
         <button class="button start-btn" id="start">Start</button>
     </div>
 
+    <div class="container quiz" id="quiz">
+        <h2 id="question">Question Text</h2>
+        <div class="options" id="options">
+            <!-- Options will be generated here -->
+        </div>
+        <button class="button next-btn" id="next">Next</button>
+    </div>
+
+    <div class="container results" id="results">
+        <h2>Quiz Results</h2>
+        <p id="score">You got 0 out of 0 questions correct.</p>
+        <button class="button start-btn" id="restart">Restart</button>
+    </div>
+
     <script>
         let selectedCategory = null;
         let selectedDifficulty = null;
+        let currentQuestionIndex = 0;
+        let questions = [];
+        let correctAnswers = 0;
 
         document.querySelectorAll('.categories .button').forEach(button => {
             button.addEventListener('click', () => {
@@ -98,12 +162,101 @@
 
         document.getElementById('start').addEventListener('click', () => {
             if (selectedCategory && selectedDifficulty) {
-                alert(`Starting quiz: \nCategory: ${selectedCategory}\nDifficulty: ${selectedDifficulty}`);
-                // preusmeravanje
+                fetchQuestions(selectedCategory, selectedDifficulty);
             } else {
                 alert('Please select a category and difficulty!');
             }
         });
+
+        document.getElementById('next').addEventListener('click', () => {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                showQuestion();
+            } else {
+                showResults();
+            }
+        });
+
+        document.getElementById('restart').addEventListener('click', () => {
+            resetQuiz();
+        });
+
+        function fetchQuestions(category, difficulty) {
+            const url = `https://opentdb.com/api.php?amount=10&category=${category}&difficulty=${difficulty}&type=multiple`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    questions = data.results.map(q => ({
+                        question: q.question,
+                        options: [...q.incorrect_answers, q.correct_answer].sort(() => Math.random() - 0.5),
+                        answer: q.correct_answer
+                    }));
+
+                    if (questions.length > 0) {
+                        startQuiz();
+                    } else {
+                        alert('No questions available for the selected category and difficulty.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching questions:', error);
+                    alert('Failed to load questions. Please try again later.');
+                });
+        }
+
+        function startQuiz() {
+            document.getElementById('setup').style.display = 'none';
+            document.getElementById('quiz').style.display = 'block';
+            currentQuestionIndex = 0;
+            correctAnswers = 0;
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const questionData = questions[currentQuestionIndex];
+            const questionElement = document.getElementById('question');
+            const optionsElement = document.getElementById('options');
+
+            questionElement.innerHTML = questionData.question;
+            optionsElement.innerHTML = '';
+
+            questionData.options.forEach(option => {
+                const button = document.createElement('button');
+                button.textContent = option;
+                button.className = 'button';
+                button.addEventListener('click', () => checkAnswer(button, option, questionData.answer));
+                optionsElement.appendChild(button);
+            });
+        }
+
+        function checkAnswer(button, selected, correct) {
+            if (selected === correct) {
+                button.classList.add('correct');
+                correctAnswers++;
+            } else {
+                button.classList.add('wrong');
+            }
+
+            document.querySelectorAll('#options .button').forEach(btn => {
+                btn.disabled = true;
+                if (btn.textContent === correct) {
+                    btn.classList.add('correct');
+                }
+            });
+        }
+
+        function showResults() {
+            document.getElementById('quiz').style.display = 'none';
+            document.getElementById('results').style.display = 'block';
+            document.getElementById('score').textContent = `You got ${correctAnswers} out of ${questions.length} questions correct.`;
+        }
+
+        function resetQuiz() {
+            document.getElementById('setup').style.display = 'block';
+            document.getElementById('quiz').style.display = 'none';
+            document.getElementById('results').style.display = 'none';
+        }
 
         function highlightSelected(selectedButton, groupSelector) {
             document.querySelectorAll(groupSelector).forEach(button => {
