@@ -7,12 +7,16 @@ const categories = [
   
   const difficulties = ["easy", "medium", "hard"];
   
+
+  //dohvatanje elemenata
   const categoryButtonsDiv = document.getElementById("category");
   const difficultyButtonsDiv = document.getElementById("difficultyList");
   const startButton = document.getElementById("start");
   
   let selectedCategory = null;
   let selectedDifficulty = null;
+
+  //funkcije za ispisivanje kategorija i tezine
   
   function selectCategory(button) {
     document.querySelectorAll(".categoryBtn").forEach((btn) => btn.classList.remove("active"));
@@ -56,54 +60,87 @@ const categories = [
     }
   }
   
-  createCategories();
+  if (categoryButtonsDiv) {
+    createCategories();
+}
+if (difficultyButtonsDiv) {
   createDifficulties();
+}
 
-  let error = startButton.previousElementSibling;
+  //pokretanje kviza, fetchovanje pitanja sa API-ja
+  if(startButton){
+    var error = startButton.previousElementSibling;
+  }
   
-  startButton.addEventListener("click", () => {
-    if (!selectedCategory || !selectedDifficulty) {
-      
-      error.innerText="Please choose both options";
-      error.classList.add("error");
-      return;
-    }else{
-        error.innerText=" ";
-        error.classList.remove("error");
+  
+  if(startButton){
+    startButton.addEventListener("click", () => {
 
-        const fetchQuizQuestions = async () => {
-        const url = `https://opentdb.com/api.php?amount=10&category=${selectedCategory}&difficulty=${selectedDifficulty}&type=multiple`;
+      if (!selectedCategory || !selectedDifficulty) {
+        //u koliko se ne odaberu i kategorija i tezina
+        error.innerText="Please choose both options";
+        error.classList.add("error");
+        return;
+      }else{
+          startButton.href="questions.html"
+          error.innerText=" ";
+          error.classList.remove("error");
 
-        try {
-            const response = await fetch(url, {
-            method: 'GET',
-          });
-      
-          if (!response.ok) {
-            throw new Error(`Error: ${response.status} - ${response.statusText}`);
-          }
-      
-          const data = await response.json();   
+          sessionStorage.setItem("selectedCategory", selectedCategory);
+    sessionStorage.setItem("selectedDifficulty", selectedDifficulty);
+
+    // Prelazimo na pitanja
+    window.location.href = "questions.html";
+  
+          }  
           
-          const questions = data.results;
-            startQuiz(questions);
-        } catch (error) {
-          console.error('Failed to fetch quiz questions:', error.message); 
+    });
+  }
+
+  const questionsDiv = document.querySelector("#containerQuestions");
+  const loadingDiv = document.querySelector("#loading");
+
+  if(questionsDiv){
+    const fetchQuizQuestions = async () => {
+
+      const selectedCategory = sessionStorage.getItem("selectedCategory");
+      const selectedDifficulty = sessionStorage.getItem("selectedDifficulty");
+      const url = `https://opentdb.com/api.php?amount=10&category=${selectedCategory}&difficulty=${selectedDifficulty}&type=multiple`;
+
+
+      loadingDiv.style.display = "block"; 
+      try {
+          const response = await fetch(url, {
+          method: 'GET',
+        });
+    
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status} - ${response.statusText}`);
         }
-      };
-      
-      fetchQuizQuestions();}  
-  });
+    
+        const data = await response.json();   
+        
+        const questions = data.results;
+
+        console.log(questions);
+
+        loadingDiv.style.display = "none";  
+          startQuiz(questions);
+      } catch (error) {
+        console.error('Failed to fetch quiz questions:', error.message); 
+      }
+    };
+    
+    fetchQuizQuestions();
+  }
 
  var correctAnswers = 0;
 function startQuiz(questions){
 
-    const categoriesDiv = document.getElementById("categories");
-    const difficultyDiv = document.getElementById("difficulty");
 
     let questionDiv = document.createElement("div");
     let answersDiv = document.createElement("div");
-    let nextQuestion = document.createElement("button");
+    let nextQuestion = document.createElement("a");
     questionDiv.id= "question";
     answersDiv.id="answers";
     nextQuestion.classList.add("nextQuestion");
@@ -113,9 +150,9 @@ function startQuiz(questions){
     
     nextQuestion.innerHTML="Next Question";
 
-    categoriesDiv.parentNode.replaceChild(questionDiv,categoriesDiv);
-    difficultyDiv.parentNode.replaceChild(answersDiv,difficultyDiv);
-    startButton.parentNode.replaceChild(nextQuestion,startButton);
+    questionsDiv.appendChild(questionDiv);  
+    questionsDiv.appendChild(answersDiv);   
+    questionsDiv.appendChild(nextQuestion); 
 
     let currentQuestionIndex = 0;
 
@@ -131,14 +168,14 @@ function startQuiz(questions){
       ];
       answers.sort(() => Math.random() - 0.5);
 
+      
+
       answers.forEach((answer) => {
         const button = document.createElement("button");
         button.innerHTML = answer;
         button.classList.add("answer");
         button.addEventListener("click", () => {
             const allButtons = answersDiv.querySelectorAll("button");
-            allButtons.forEach((btn) => (btn.disabled = true ));
-            allButtons.forEach((btn) => (btn.classList.add("disabled") ));
 
             if (answer === currentQuestion.correct_answer) {
                 button.classList.add("correct");
@@ -146,10 +183,18 @@ function startQuiz(questions){
               } else {
                 button.classList.add("wrong");
                 allButtons.forEach((btn) => {
-                    if (btn.innerHTML === currentQuestion.correct_answer) {
+                    console.log(btn.innerHTML);
+                    
+                    let correctAnswer = document.createElement("p");
+                    
+                    correctAnswer.innerHTML = currentQuestion.correct_answer;
+                    console.log(correctAnswer.innerHTML);
+                    if (btn.innerHTML === correctAnswer.innerHTML) {
                       btn.classList.add("correct");
                     } });
                 }
+                allButtons.forEach((btn) => (btn.disabled = true ));
+                allButtons.forEach((btn) => (btn.classList.add("disabled") ));
         });
         answersDiv.appendChild(button);
       });
@@ -157,21 +202,28 @@ function startQuiz(questions){
 
     showQuestion();
 
+    //dugme za prikazivanje sledeceg pitanja
     nextQuestion.addEventListener("click", () => {
-        if (currentQuestionIndex < questions.length - 1) {
-            currentQuestionIndex++;
-            showQuestion();
-        } else {
-            
-            nextQuestion.disabled = true;
-            nextQuestion.classList.add("disabled");
-            questionDiv.innerHTML = `
-                <h1>Quiz Completed!</h1>
-                <p>You answered ${correctAnswers} out of ${questions.length} questions correctly.</p>
-            `;
-            answersDiv.innerHTML = "";
-        }
-    });
+      if (currentQuestionIndex < questions.length - 1) {
+          currentQuestionIndex++;
+          showQuestion();
+      } else {
+          // prikazivanje rezultata
+          questionDiv.innerHTML = `
+              <h1>Quiz Completed!</h1>
+              <p>You answered ${correctAnswers} out of ${questions.length} questions correctly.</p>
+          `;
+          answersDiv.innerHTML = "";
+  
+          // prepravljamo u dugme koje vodi na index.html
+          nextQuestion.innerHTML = "Try Again";
+  
+          nextQuestion.addEventListener("click", () => {
+              window.location.href = "index.html";
+          });
+      }
+  });
+  
 
 }
   
