@@ -1,17 +1,34 @@
 let category = null;
 let difficulty = null;
-let i = 0;
-let correct = 0;
-let data = [];
+let currentCategory = null;
+let currentDifficulty = null;
 
-document.getElementById("music").addEventListener("click", function () { category = "Music"; });
-document.getElementById("history").addEventListener("click", function () { category = "History"; });
-document.getElementById("science").addEventListener("click", function () { category = "Science"; });
-document.getElementById("geography").addEventListener("click", function () { category = "Geography"; });
+let data = []; /* pitanja */
+let i = 0; /* za iteraciju kroz pitanja */
+let correct = 0; /* za broj tacnih odgovora */
 
-document.getElementById("easy").addEventListener("click", function () { difficulty = "easy"; });
-document.getElementById("medium").addEventListener("click", function () { difficulty = "medium"; });
-document.getElementById("hard").addEventListener("click", function () { difficulty = "hard"; });
+document.getElementById("music").addEventListener("click", function () { selectButton(this, "category"); });
+document.getElementById("history").addEventListener("click", function () { selectButton(this, "category"); });
+document.getElementById("science").addEventListener("click", function () { selectButton(this, "category"); });
+document.getElementById("geography").addEventListener("click", function () { selectButton(this, "category"); });
+
+document.getElementById("easy").addEventListener("click", function () { selectButton(this, "difficulty"); });
+document.getElementById("medium").addEventListener("click", function () { selectButton(this, "difficulty"); });
+document.getElementById("hard").addEventListener("click", function () { selectButton(this, "difficulty"); });
+
+function selectButton(button, type) {
+    if (type === "category") {
+        if (currentCategory != null) currentCategory.style.backgroundColor = "#475569";
+        currentCategory = button;
+        category = button.innerText;
+    } else {
+        if (currentDifficulty != null) currentDifficulty.style.backgroundColor = "#475569";
+        currentDifficulty = button;
+        difficulty = button.innerText.toLowerCase(); /* zato sto API koristi samo mala slova za imena difficultija */
+    }
+    
+    button.style.backgroundColor = "#738296"; 
+}
 
 function createURL(categoryId, difficulty) {
     return "https://opentdb.com/api.php?amount=10&category=" + categoryId + "&difficulty=" + difficulty + "&type=multiple";
@@ -46,8 +63,14 @@ function showQuestion() {
 
     if (i >= data.length) {
         document.getElementById("frame").innerHTML =
-            "<h3>Quiz Completed!</h3>" +
-            "<p>You answered " + correct + "/10 questions correctly.</p>";
+            "<h3>Quiz over!</h3>" +
+            "<p>You answered " + correct + "/10 questions correctly!</p>" +
+            "<button id='playAgain' class='mainFrameButton'>Play again</button>";
+
+        document.getElementById("playAgain").addEventListener("click", function () {
+            location.reload(); // osvezava stranicu
+        });
+
         return;
     }
 
@@ -92,7 +115,7 @@ function showQuestion() {
             setTimeout(function () {
                 i++;
                 showQuestion();
-            }, 500);
+            }, 1000);
         });
         answersDiv.appendChild(answerButton);
     }
