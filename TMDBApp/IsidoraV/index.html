@@ -9,6 +9,13 @@
       href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
       rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+      integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
     <link rel="stylesheet" href="style.css" type="text/css" />
     <title>TMDBApp</title>
   </head>
@@ -20,10 +27,28 @@
       <div class="dropdown">
         <button class="dropbtn">Movies</button>
         <div id="myDropdown" class="dropdown-content">
-          <a href="#">Link 1</a>
-          <a href="#">Link 2</a>
-          <a href="#">Link 3</a>
+          <!-- <a href="#">1</a>
+          <a href="#">2</a> -->
         </div>
+      </div>
+    </div>
+    <div id="main">
+      <div id="category-left">
+        <span class="category-name">Category name</span>
+        <div class="sort">
+          <h3>Sort</h3>
+          <i class="fa-solid fa-chevron-right"></i>
+        </div>
+        <div class="filter">
+          <h3>Filter</h3>
+          <i class="fa-solid fa-chevron-right"></i>
+        </div>
+      </div>
+      <div id="movies"></div>
+    </div>
+    <div id="footer">
+      <div id="logo">
+        <img src="images/gg-logo.png" alt="Logo slika" /><span>TMDB</span>
       </div>
     </div>
     <script type="text/javascript" src="main.js"></script>
