@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>TMBD app</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <header>
+            <img src="gg-logo.png" width="50" height="50" alt="TMDB logo">
+            <h1>TMDB</h1>
+            <p>movies</p>
+        </header>
+
+        <div class="container">
+            <div class="sidebar">
+                <ul>
+                    <li>Popular</li>
+                    <li>Now playing</li>
+                    <li>Upcoming</li>
+                    <li>Top rated</li>
+                </ul>
+            </div>
+
+            <div class="slika">
+                <img src="mufasa.jpg" width="200" height="450" alt="movie example">
+                <h3>Mufasa: The lion king</h3>
+                <p>December 18, 2024</p>
+            </div>
+
+            <div class="sort-container">
+                <h3>Sort</h3>
+                    <div class="sort-dropdown">
+                        <label for "sort-by">Sort results by:</label>
+                            <select id="sort-by">
+                                <option>Popularity ascending</option>
+                                <option selected>Popularity descending</option>
+                                <option>Rating ascending</option>
+                                <option>Rating descending</option>
+                                <option>Release date ascending</option>
+                                <option>Release date descending</option>
+                            </select>
+                    </div>
+            </div>
+
+            <div class="filter-container">
+                <h3>Filters</h3>
+                <h4>Release date</h4>
+                <input type="date" id="from-date" placeholder="from">
+                <input type="date" id="to-date" placeholder="to">
+                <h4>Genres</h4>
+                    <div class="genre-buttons">
+                        <button>Action</button>
+                        <button>Horror</button>
+                        <button>Comedy</button>
+                        <button>Crime</button>
+                        <button>Adventure</button>
+                    </div>
+                <h4>Language</h4>
+                <select id="language">
+                    <option>English</option>
+                </select>
+
+            </div>
+
+        </div>
+
+        <footer>
+            <img src="gg-logo.png" alt="logo">
+            <p>TMDB</p>
+        </footer>
+
+    </body>
+
+</html>
