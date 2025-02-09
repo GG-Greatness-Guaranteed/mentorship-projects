@@ -38,7 +38,8 @@ const categories = [
       button.className = "categoryBtn";
       button.dataset.id = category.id;
       button.textContent = category.name;
-      button.addEventListener("click", function () {
+      button.addEventListener("click", function (event) {
+        event.preventDefault();
         selectCategory(button);
       });
       categoryButtonsDiv.appendChild(button);
@@ -53,7 +54,8 @@ const categories = [
       button.className = "difficultyBtn";
       button.dataset.difficulty = difficulty;
       button.textContent = difficulty;
-      button.addEventListener("click", function () {
+      button.addEventListener("click", function (event) {
+        event.preventDefault();
         selectDifficulty(button);
       });
       difficultyButtonsDiv.appendChild(button);
@@ -175,6 +177,7 @@ function startQuiz(questions){
         button.innerHTML = answer;
         button.classList.add("answer");
         button.addEventListener("click", () => {
+          
             const allButtons = answersDiv.querySelectorAll("button");
 
             if (answer === currentQuestion.correct_answer) {
