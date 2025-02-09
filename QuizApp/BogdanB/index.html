@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Document</title>
+</head>
+<body>
+  <form name="forma">
+    <div id="block1">
+            <div id="categories">
+                <p>Categories</p>
+                <div class="block">
+                  <div class="button">
+                    <input type="radio" id="12" name="category" value="12"/>
+                    <label class="btn btn-default" for="12">Music</label>
+                  </div>
+                  <div class="button">
+                    <input type="radio" id="23" name="category" value="23"/>
+                    <label class="btn btn-default" for="23">History</label>
+                  </div>
+                  <div class="button">
+                    <input type="radio" id="17" name="category" value="17"/>
+                    <label class="btn btn-default" for="17">Science</label>
+                  </div>
+                  <div class="button">
+                    <input type="radio" id="22" name="category" value="22"/>
+                    <label class="btn btn-default" for="22">Geography</label>
+                  </div>
+                </div>
+            </div>
+            <div id="difficulty">
+                  <p>Difficulty</p>
+                  <div class="block">
+                    <div class="button">
+                        <input type="radio" id="easy" name="difficulty" value="easy" />                      
+                        <label class="btn btn-default" for="easy">Easy</label>
+                    </div>
+                    <div class="button">
+                        <input type="radio" id="medium" name="difficulty" value="medium" />                      
+                        <label class="btn btn-default" for="medium">Medium</label>
+                    </div>
+                    <div class="button">
+                        <input type="radio" id="hard" name="difficulty" value="hard" />                      
+                        <label class="btn btn-default" for="hard">Hard</label>
+                    </div>
+                  </div>
+            </div>
+            <div id="amount">
+              <p>Amount</p>
+              <input type="number" id="limit">
+            </div>
+            <p id="Error"></p>
+            <button type="button" id="start" class="button">Start</button>
+    </div>
+    
+
+
+
+    <!-- Pitanja -->
+    <div id="block2">
+          <p id="number"></p>
+          <p id="question"></p>
+          <div class="block" id="queBlock">
+            
+          </div>
+          <button type="button" id="next" class="button">Next</button>
+    </div>
+
+
+
+    <div id="block3">
+      <p id="end">The End</p>
+      <p id="result"></p>
+    </div>
+  </div>
+</form>
+
+
+    <script src="main.js"></script>
+</body>
+</html>
