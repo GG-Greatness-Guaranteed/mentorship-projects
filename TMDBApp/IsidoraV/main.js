@@ -32,10 +32,9 @@ window.onclick = function(event) {
 const fetchMovies = async (category) => {
   const url = `${baseUrl}${category}?api_key=${apiKey}`;
   try {
-      console.log(`Fetching movies from: ${url}`);
+      
       const response = await fetch(url);
       if (!response.ok) throw new Error(`Error: ${response.status} - ${response.statusText}`);
-
       const data = await response.json();
       return data.results; 
   } catch (error) {
@@ -67,19 +66,35 @@ const displayMovies = async (category) => {
 };
 
 
+const categoryName = document.getElementById("category-name");
+const logo = document.getElementById("logo");
+
+displayMovies(categories.popular.endpoint);
+categoryName.innerText=categories.popular.displayName;
+
+logo.addEventListener('click', ()=>{
+  displayMovies(categories.popular.endpoint);
+categoryName.innerText=categories.popular.displayName;
+})
+
+
 for (let categoryKey in categories) {
   const category = categories[categoryKey]; 
   const movieLink = document.createElement("a");
+
   movieLink.href = "#";
   movieLink.textContent = category.displayName;
   movieLink.dataset.category = category.endpoint;
 
-  movieLink.addEventListener("click", (event) => {
-      event.preventDefault(); 
-      displayMovies(category.endpoint);
-  });
+  
 
   dropdown.appendChild(movieLink);
+  movieLink.addEventListener("click", (event) => {
+    event.preventDefault(); 
+   
+    displayMovies(category.endpoint);
+    categoryName.innerText = category.displayName;
+});
 }
 
 
