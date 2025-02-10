@@ -49,6 +49,7 @@ document.getElementById("start").addEventListener("click", async function () {
         let response = await fetch(quizURL);
         let jsonData = await response.json();
         data = jsonData.results;
+
         i = 0;
         correct = 0;
         showQuestion();
@@ -76,6 +77,7 @@ function showQuestion() {
 
     let question = data[i];
     let answers = question.incorrect_answers.concat(question.correct_answer);
+    shuffle(answers);
 
     let frame = document.getElementById("frame");
     frame.innerHTML = "";
@@ -97,6 +99,7 @@ function showQuestion() {
         let answerButton = document.createElement("button");
         answerButton.className = "answer";
         answerButton.innerHTML = answer;
+
         answerButton.addEventListener("click", function () {
             if (answer === question.correct_answer) {
                 answerButton.style.backgroundColor = "green";
@@ -122,3 +125,20 @@ function showQuestion() {
 
     frame.appendChild(answersDiv);
 }
+
+/* funkcija za shuffle */
+function shuffle(array) {
+    let currentIndex = array.length;
+  
+    // While there remain elements to shuffle...
+    while (currentIndex != 0) {
+  
+      // Pick a remaining element...
+      let randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+  
+      // And swap it with the current element.
+      [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex], array[currentIndex]];
+    }
+  }
