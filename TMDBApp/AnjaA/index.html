@@ -23,10 +23,64 @@
         
             <main class="content">
                 <header class="top-section">
-                    <button class="nav-arrow left"></button>
-                    <button class="nav-arrow right"></button>
+                    <div class="nav-buttons">
+                        <button class="nav-arrow left">&#9664;</button>
+                        <button class="nav-arrow right">&#9654;</button>
+                    </div>
                     <input type="text" placeholder="Search for movies..." class="search-bar">
-                </header>
+                
+                    <div class="top-controls">
+                        <div class="dropdown">
+
+                            <!--sortiranje-->
+                            <button class="dropdown-btn" id="sort-btn">Sort</button>
+                            <div class="dropdown-menu" id="sort-menu">
+                                    <button>Popularity ascending</button>
+                                    <button>Popularity descending</button>
+                                    <button>Rating ascending</button>
+                                    <button>Rating descending</button>
+                                    <button>Release date ascending</button>
+                                    <button>Release date descending</button>
+                            </div>
+                        </div>
+                
+                        <div class="dropdown">
+                            <button class="dropdown-btn" id="filter-btn">Filters</button>
+                            <div class="dropdown-menu" id="filter-menu">
+
+                                <!--filteri-->
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="filter-date"> Release date
+                                </label>
+                                <div class="date-filters">
+                                    <label for="from-date">From:</label>
+                                    <input type="date" id="from-date">
+                                    <label for="to-date">To:</label>
+                                    <input type="date" id="to-date">
+                                </div>
+                               
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="filter-genre"> Genres
+                                </label>
+                                <div class="genre-buttons">
+                                    <button>Action</button>
+                                    <button>Horror</button>
+                                    <button>Comedy</button>
+                                    <button>Crime</button>
+                                    <button>Adventure</button>
+                                </div>
+                
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="filter-language"> Language
+                                </label>
+                                <select id="language">
+                                    <option>English</option>
+                                </select>
+
+                            </div>
+                        </div>
+                    </div>
+                </header>                                
 
                 <div class="featured-movie">
                     <img src="mufasa.jpg" alt="Mufasa: The Lion King">
@@ -35,40 +89,8 @@
                         <p>December 18, 2024</p>
                     </div>
                 </div>
-
-                <section class="sort-filter">
-                    <div class="sort-container">
-                        <h3>Sort</h3>
-                        <select id="sort-by">
-                            <option>Popularity ascending</option>
-                            <option selected>Popularity descending</option>
-                            <option>Rating ascending</option>
-                            <option>Rating descending</option>
-                            <option>Release date ascending</option>
-                            <option>Release date descending</option>
-                        </select>
-                    </div>
-                    
-                    <div class="filter-container">
-                        <h3>Filters</h3>
-                        <h4>Release date</h4>
-                        <input type="date" id="from-date" placeholder="from">
-                        <input type="date" id="to-date" placeholder="to">
-                        <h4>Genres</h4>
-                        <div class="genre-buttons">
-                            <button>Action</button>
-                            <button>Horror</button>
-                            <button>Comedy</button>
-                            <button>Crime</button>
-                            <button>Adventure</button>
-                        </div>
-                        <h4>Language</h4>
-                        <select id="language">
-                            <option>English</option>
-                        </select>
-                    </div>
-                </section>
             </main>
         </div>
+        <script src="script.js"></script>
     </body>
 </html>
