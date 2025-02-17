@@ -36,6 +36,29 @@ body {
     color: #f9f9f9;
 }
 
+.tmdb {
+    background: linear-gradient(90deg, #90cea1, #01b4e4); 
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 800; 
+    font-size: 26px; 
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    display: inline-block;
+    text-shadow: 0px 0px 10px rgba(1, 180, 228, 0.9); 
+    animation: glowAnimation 1.5s infinite alternate;
+}
+
+@keyframes glowAnimation {
+    0% {
+        text-shadow: 0px 0px 12px rgba(1, 180, 228, 0.9);
+    }
+    100% {
+        text-shadow: 0px 0px 20px rgba(144, 206, 161, 1);
+    }
+}
+
 nav ul {
     list-style: none;
     padding: 0;

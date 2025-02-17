@@ -6,6 +6,8 @@ const sortMenu = document.getElementById("sort-menu");
 const filterBtn = document.getElementById("filter-btn");
 const filterMenu = document.getElementById("filter-menu");
 
+const menuItems = document.querySelectorAll(".sidebar nav ul li");
+
 sortBtn.addEventListener("click", ()=>{
     sortMenu.parentElement.classList.toggle("active");
     filterMenu.parentElement.classList.remove("active");
@@ -16,8 +18,15 @@ filterBtn.addEventListener("click", ()=>{
     sortMenu.parentElement.classList.remove("active");
 })
 
-async function fetchMovies() {
-    const url = `https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&language=en-US&page=1`;
+const categories = {
+    "Popular" : "popular",
+    "Now playing" : "now_playing",
+    "Upcoming" : "upcoming",
+    "Top rated" : "top_rated"
+};
+
+async function fetchMovies(category = "popular") {
+    const url = `https://api.themoviedb.org/3/movie/${category}?api_key=${apiKey}&language=en-US&page=1`;
     
     try {
         const response = await fetch(url);
@@ -53,6 +62,18 @@ function displayMovies(movies) {
 
         moviesContainer.appendChild(movieCard);
     });
+}
+
+function handleCategoryClick(event) {
+    const categoryName = event.target.innerText;
+    const category = categories[categoryName];
+
+    if(category){
+        fetchMovies(category);
+    }
+}
+for (let i = 0; i < menuItems.length; i++) {
+    menuItems[i].addEventListener("click", handleCategoryClick);
 }
 
 fetchMovies();
