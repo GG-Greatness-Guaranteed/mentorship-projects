@@ -16,7 +16,7 @@ sortBtn.addEventListener("click", ()=>{
 filterBtn.addEventListener("click", ()=>{
     filterMenu.parentElement.classList.toggle("active");
     sortMenu.parentElement.classList.remove("active");
-})
+});
 
 const categories = {
     "Popular" : "popular",
@@ -25,13 +25,17 @@ const categories = {
     "Top rated" : "top_rated"
 };
 
+let currentMovies = [];
+let lastSortType = null; 
+
 async function fetchMovies(category = "popular") {
     const url = `https://api.themoviedb.org/3/movie/${category}?api_key=${apiKey}&language=en-US&page=1`;
     
     try {
         const response = await fetch(url);
         const data = await response.json();
-        displayMovies(data.results);
+        currentMovies = data.results; 
+        applySorting(); 
     } catch (error) {
         console.error("Error fetching movies:", error);
     }
@@ -47,9 +51,9 @@ function displayMovies(movies) {
         const rating = movie.vote_average * 10;
 
         let ratingClass = "rating-red";
-        if (rating>=75) {
+        if (rating >= 75) {
             ratingClass = "rating-green";
-        } else if (rating>=50) {
+        } else if (rating >= 50) {
             ratingClass = "rating-yellow";
         }
 
@@ -72,8 +76,51 @@ function handleCategoryClick(event) {
         fetchMovies(category);
     }
 }
-for (let i = 0; i < menuItems.length; i++) {
-    menuItems[i].addEventListener("click", handleCategoryClick);
+
+menuItems.forEach((item) => {
+    item.addEventListener("click", handleCategoryClick);
+});
+
+fetchMovies(); 
+
+const sortButtons = document.querySelectorAll("#sort-menu button");
+
+sortButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+        lastSortType = button.innerText;
+        applySorting();
+        sortMenu.parentElement.classList.remove("active");
+    });
+});
+
+function applySorting() {
+    if (lastSortType) {
+        sortMovies(lastSortType);
+    } else {
+        displayMovies(currentMovies); 
+    }
 }
 
-fetchMovies();
+function sortMovies(sortType) {
+    switch (sortType) {
+        case "Popularity ascending": 
+            currentMovies.sort((a, b) => a.popularity - b.popularity);
+            break;
+        case "Popularity descending":
+            currentMovies.sort((a, b) => b.popularity - a.popularity);
+            break;
+        case "Rating ascending":
+            currentMovies.sort((a, b) => a.vote_average - b.vote_average);
+            break;
+        case "Rating descending":
+            currentMovies.sort((a, b) => b.vote_average - a.vote_average);
+            break;
+        case "Release date ascending":
+            currentMovies.sort((a, b) => new Date(a.release_date) - new Date(b.release_date));
+            break;
+        case "Release date descending":
+            currentMovies.sort((a, b) => new Date(b.release_date) - new Date(a.release_date));
+            break;
+    }
+    displayMovies(currentMovies);
+}
