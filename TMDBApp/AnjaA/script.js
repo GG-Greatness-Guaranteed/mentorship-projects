@@ -8,6 +8,9 @@ const filterMenu = document.getElementById("filter-menu");
 
 const menuItems = document.querySelectorAll(".sidebar nav ul li");
 
+const searchBar = document.getElementById("search-bar");
+const searchButton = document.getElementById("search-button");
+
 sortBtn.addEventListener("click", ()=>{
     sortMenu.parentElement.classList.toggle("active");
     filterMenu.parentElement.classList.remove("active");
@@ -123,4 +126,39 @@ function sortMovies(sortType) {
             break;
     }
     displayMovies(currentMovies);
+}
+
+searchButton.addEventListener("click", () => {
+    searchMovies();
+});
+
+searchBar.addEventListener("keypress", (event) => {
+    if (event.key == "Enter") {
+        searchMovies();
+    }
+});
+
+async function searchMovies() {
+    const typed = searchBar.value.trim().toLowerCase();
+
+    if (typed === "") {
+        displayMovies(currentMovies); 
+        return;
+    }
+
+    const searchUrl = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=en-US&query=${encodeURIComponent(typed)}&page=1`;
+
+    try {
+        const response = await fetch(searchUrl);
+        const data = await response.json();
+
+        if (data.results.length === 0) {
+            moviesContainer.innerHTML = "<p>No results found.</p>"; 
+            return;
+        }
+
+        displayMovies(data.results); 
+    } catch (error) {
+        moviesContainer.innerHTML = "<p>Failed to load search results.</p>";
+    }
 }

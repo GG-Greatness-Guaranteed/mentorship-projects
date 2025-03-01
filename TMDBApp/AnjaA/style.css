@@ -116,19 +116,49 @@ nav ul li:hover {
     color: #6ac9a7;
 }
 
+.search-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 40%; 
+}
+
 .search-bar {
-    flex-grow: 1;
-    padding: 10px;
+    width: 100%;
+    padding: 10px 45px 10px 15px; 
     font-size: 16px;
     border: none;
     border-radius: 5px;
     background-color: #333;
     color: white;
-    max-width: 40%;
 }
 
 .search-bar::placeholder {
     color: #aaa;
+}
+
+.search-button {
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.search-icon {
+    width: 22px;
+    height: 22px;
+    opacity: 0.8;
+    transition: opacity 0.3s;
+}
+
+.search-button:hover .search-icon {
+    opacity: 1;
 }
 
 .top-controls {
