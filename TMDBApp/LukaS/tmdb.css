@@ -138,6 +138,14 @@ body{
     cursor: pointer; 
 }
 
+.sortOpen{ 
+    width: 320px;
+}
+
+.filterOpen{
+    width: 320px;
+}
+
 #search{ /* search dugme */
     width: 294px;
     height: 47px;
@@ -167,7 +175,7 @@ body{
 
 .poster{ /* poster za film */
     box-sizing: border-box;
-    width: 182px;
+    width: 183px;
     height: 270px;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
