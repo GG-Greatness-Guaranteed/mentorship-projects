@@ -5,6 +5,7 @@ body {
     margin: 0;
     display: flex;
     height: 100vh;
+    overflow-x: hidden;
 }
 
 .sidebar {
@@ -336,4 +337,53 @@ nav ul li:hover {
 
 .rating-red {
     background-color: #db2360;
+}
+
+.genre-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px; 
+    max-height: 200px; 
+    overflow-y: auto; 
+    justify-content: center; 
+}
+
+.genre-buttons button {
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+    min-width: 100px; 
+    text-align: center;
+}
+
+.genre-buttons button:hover {
+    background-color: #6ac9a7;
+}
+
+.genre-buttons button.selected {
+    background-color: #01b4e4;
+    color: black;
+}
+
+.genre-buttons::-webkit-scrollbar {
+    width: 8px; 
+}
+
+.genre-buttons::-webkit-scrollbar-track {
+    background: #222; 
+    border-radius: 5px;
+}
+
+.genre-buttons::-webkit-scrollbar-thumb {
+    background: linear-gradient(90deg, #90cea1, #01b4e4); 
+    border-radius: 5px;
+}
+
+.genre-buttons::-webkit-scrollbar-thumb:hover {
+    background: #6ac9a7; 
 }

@@ -11,6 +11,19 @@ const menuItems = document.querySelectorAll(".sidebar nav ul li");
 const searchBar = document.getElementById("search-bar");
 const searchButton = document.getElementById("search-button");
 
+const filterDateCheckBox = document.getElementById("filter-date");
+const fromDateInput = document.getElementById("from-date");
+const toDateInput = document.getElementById("to-date");
+
+const filterGenreCheckBox = document.getElementById("filter-genre");
+const genreButtons = document.querySelectorAll(".genre-buttons button");
+
+const filterLanguageCheckBox = document.getElementById("filter-language");
+const languageSelect = document.getElementById("language");
+
+let selectedGenres = new Set();
+
+
 sortBtn.addEventListener("click", ()=>{
     sortMenu.parentElement.classList.toggle("active");
     filterMenu.parentElement.classList.remove("active");
@@ -162,3 +175,59 @@ async function searchMovies() {
         moviesContainer.innerHTML = "<p>Failed to load search results.</p>";
     }
 }
+
+async function fetchGenres() {
+    const genreContainer = document.querySelector(".genre-buttons");
+    const url = `https://api.themoviedb.org/3/genre/movie/list?api_key=${apiKey}&language=en-US`;
+    
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        genreContainer.innerHTML = ""; 
+
+        data.genres.forEach((genre) => {
+            const button = document.createElement("button");
+            button.textContent = genre.name;
+            button.dataset.genreId = genre.id;
+            button.addEventListener("click", () => toggleGenreSelection(button));
+            genreContainer.appendChild(button);
+        });
+    } catch (error) {
+        console.error("Error fetching genres:", error);
+    }
+}
+
+async function fetchLanguages() {
+    const url = `https://api.themoviedb.org/3/configuration/languages?api_key=${apiKey}`;
+    
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        languageSelect.innerHTML = ""; 
+
+        data.forEach((lang) => {
+            if (lang.english_name) {
+                const option = document.createElement("option");
+                option.value = lang.iso_639_1;
+                option.textContent = lang.english_name;
+                languageSelect.appendChild(option);
+            }
+        });
+    } catch (error) {
+        console.error("Error fetching languages:", error);
+    }
+}
+
+function toggleGenreSelection(button) {
+    const genreId = button.dataset.genreId;
+    if (selectedGenres.has(genreId)) {
+        selectedGenres.delete(genreId);
+        button.classList.remove("selected");
+    } else {
+        selectedGenres.add(genreId);
+        button.classList.add("selected");
+    }
+}
+
+fetchGenres();
+fetchLanguages();
